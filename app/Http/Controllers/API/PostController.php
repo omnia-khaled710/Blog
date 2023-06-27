@@ -14,7 +14,7 @@ class PostController extends Controller
      */
     public function index(Post $post)
     {
-        $post=Post::all();
+        $post=Post::with('categories')->get();
         return $post;
 
     }
@@ -38,8 +38,14 @@ class PostController extends Controller
      */
     public function show(string $id)
     {
-      $post = Post::find($id);
-        return $post->categories;
+    $post = Post::with('categories')->find($id);
+
+    if (!$post) {
+        return response()->json(['message'=>'Post not found'],404);
+    }else{
+        return $post;
+
+    }
 
     }
 
@@ -49,7 +55,6 @@ class PostController extends Controller
     public function update(PostRequest $request, string $id)
     {
         $post = Post::find($id);
-
         $post->title = $request->title;
         $post->content = $request->content;
         $post->save();
@@ -72,13 +77,13 @@ class PostController extends Controller
 
         public function search(Request $request)
         {
-            $query = $request->query('q');
+            $query = $request->input('query');
             $posts = Post::where('title', 'like', "%{$query}%")
                          ->orWhere('content', 'like', "%{$query}%")
                          ->get();
 
             return response()->json($posts);
         }
-    
+
 
 }

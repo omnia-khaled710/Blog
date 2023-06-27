@@ -22,8 +22,10 @@ class PostRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => 'required|unique:posts|max:100|min:3',
+            'title' => 'required|unique:posts,title|max:100|min:3',
             'content' => 'required|min:30',
         ];
     }
 }
+
+// php artisan make:request StorePostRequest

@@ -27,4 +27,4 @@ Route::apiResource('categories',CategoryController::class);
 Route::post('posts/{post}/categories', [PostCategoryController::class, 'store']);
 Route::delete('posts/{post}/categories/{category}', [PostCategoryController::class,'destroy']);
 
-Route::get('posts/search', [PostController::class, 'search']);
+Route::get('/search', [PostController::class, 'search']);
